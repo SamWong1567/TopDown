@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+
+	    //Get input from the joysticks
         Vector3 input = new Vector3 (joystick.Horizontal(), 0, joystick.Vertical());
         Vector3 lookInput = new Vector3(joystickLook.Horizontal(), 0, joystickLook.Vertical());
 
@@ -42,7 +44,6 @@ public class PlayerController : MonoBehaviour {
 
         //Move player
         Vector3 motion = input;
-
         motion = (motion.magnitude > 1) ? motion.normalized : motion;
         motion += Vector3.up * -8;
         controller.Move(motion*walkSpeed * Time.deltaTime);
