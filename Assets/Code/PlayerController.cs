@@ -41,7 +41,9 @@ public class PlayerController : MonoBehaviour {
 
 
         //Move player
-        Vector3 motion = input.normalized;
+        Vector3 motion = input;
+
+        motion = (motion.magnitude > 1) ? motion.normalized : motion;
         motion += Vector3.up * -8;
         controller.Move(motion*walkSpeed * Time.deltaTime);
 
