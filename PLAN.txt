@@ -1,0 +1,87 @@
+NAME
+
+INSPIRATION
+	Dark Souls control smoothness
+	Binding of Isaac random pickup and skill system
+	POE skill system
+	DOOM speed
+
+PLAYER
+	Stats
+		Damage
+		Health
+		Gold?
+		Mana?
+		Class?
+		Block Chance?
+
+	Control Possibilities
+		Dodging
+		Swipe to attack
+		Melee Combat
+		
+	Skills/Attacks
+		Gun
+			Single shot
+			Auto
+			Burst
+			
+		Spells
+			Single Projectile
+			AOE
+			Channel
+			
+	Skill/Attack Modifiers
+		Range
+		Rate of Fire
+		Damage
+		Projectile Size
+		Chain
+		Multiple Projectiles
+		Add AOE
+	
+	Recovery
+		Potion|| Health Pick up|| Health on Kill?
+
+		
+ENEMY
+	Type
+		Human
+			??
+		Monsters
+			??
+			
+	Behaviour
+		How to get enemy to behave how i want?
+	
+	Skills/Attack
+		Projectile
+		Melee
+		AOE
+		Stun
+		Freeze
+		Explode on Kill
+
+MAP/TERRAIN
+	Layout
+		Open World-ish || Randomly generated Rooms
+		
+	Show map on screen when called
+	
+	Tileset
+		Gritty
+		Bright	
+	
+UI
+	Always On UI
+		Player Health
+		Monster Health		
+		
+	Player Stats Menu	
+	Options Menu
+	
+	
+AUDIO
+	BGM
+	SFX
+		

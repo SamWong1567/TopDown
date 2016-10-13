@@ -54,59 +54,24 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     public virtual void OnDrag(PointerEventData ped) {
 
         Vector2 pos;
-        //Convert screen point coord to local point in joystick rect
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgImg.rectTransform, ped.position, ped.pressEventCamera, out pos)) {
+        //Get coordinates in joystick background image to get movement
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(joystickImg.rectTransform, ped.position, ped.pressEventCamera, out pos)) {
 
+            pos.x = (pos.x * 2 / joystickImg.rectTransform.sizeDelta.x);
+            pos.y = (pos.y * 2 / joystickImg.rectTransform.sizeDelta.y);
 
-            ////divide the coords to the size of joystick background and multiply by 2 to get coords max as 1
-            //pos.x = (pos.x * 2 / bgImg.rectTransform.sizeDelta.x);
-            //pos.y = (pos.y * 2 / bgImg.rectTransform.sizeDelta.y);
-
-
-            ////the current coord
-            //dragPoint = new Vector3(pos.x, 0, pos.y);
-
-            ////to get the difference and find the net movement
-            //move = dragPoint - originPoint;
-
-            //to prevent moving diagonally to be faster
-            //move = (move.magnitude > 1.0f) ? move.normalized : move;
-
-           
-
-
-            ////visually move joystick
-            //Vector2 joystickMove = new Vector2(move.x, move.z) * 30;
-            //joystickImg.rectTransform.anchoredPosition = joystickOrigin + joystickMove;
-
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(joystickImg.rectTransform, ped.position, ped.pressEventCamera, out pos)) {
-
-                //Debug.Log(pos);
-
-                pos.x = (pos.x*2/ joystickImg.rectTransform.sizeDelta.x);
-                pos.y = (pos.y*2/ joystickImg.rectTransform.sizeDelta.y);
-
-                move = new Vector2(pos.x, pos.y);
-                move = (move.magnitude > 1.0f) ? move.normalized : move;
-
-                Debug.Log(move);
-
-
-                Vector2 joystickMove = new Vector2(move.x, move.y)*(joystickImg.rectTransform.sizeDelta.x/2);
-                joystickKnob.rectTransform.anchoredPosition = joystickMove;
-            }
-        }
-
-
+            move = new Vector2(pos.x, pos.y);
+            move = (move.magnitude > 1.0f) ? move.normalized : move;
             
-        
+            Vector2 joystickMove = new Vector2(move.x, move.y) * (joystickImg.rectTransform.sizeDelta.x / 2);
+            joystickKnob.rectTransform.anchoredPosition = joystickMove;
+        }                                
     }
 
     //Event: when screen is clicked down
     public virtual void OnPointerDown(PointerEventData ped) {
-
         Vector2 pos;
-
+        //Get coordinates in joystick boundary to determine on-click joystick anchor point
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgImg.rectTransform, ped.position, ped.pressEventCamera, out pos)) {
 
             //enable joystick on click
@@ -114,21 +79,14 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             joystickKnob.enabled = true;
             joystickImg.enabled = true;
             joystickOrigin = new Vector2(pos.x, pos.y);
-            joystickImg.rectTransform.anchoredPosition = joystickOrigin;
-
-            ////divide the coords to the size of joystick background and multiply by 2 to get coords max as 1
-            //pos.x = (pos.x * 2 / bgImg.rectTransform.sizeDelta.x);
-            //pos.y = (pos.y * 2 / bgImg.rectTransform.sizeDelta.y);
-
-            //originPoint = new Vector3(pos.x, 0, pos.y);
-            //originPoint = (originPoint.magnitude > 1.0f) ? originPoint.normalized : originPoint;           
+            joystickImg.rectTransform.anchoredPosition = joystickOrigin;       
 
         }
     }
 
     //Event: when click is released
     public virtual void OnPointerUp(PointerEventData ped) {
-
+        //Reset position and disable joystick image
         move = Vector3.zero;
         joystickImg.rectTransform.anchoredPosition = Vector3.zero;
         joystickKnob.rectTransform.anchoredPosition = Vector3.zero;
@@ -139,11 +97,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     public float Horizontal() {
 
         if (move.x != 0) {
-
             return move.x;
-        }
-        else {
-
+        } else {
             return Input.GetAxisRaw("Horizontal");
         }
     }
@@ -151,11 +106,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         public float Vertical() {
 
         if (move.y != 0) {
-
             return move.y;
-        }
-        else {
-
+        } else {
             return Input.GetAxisRaw("Vertical");
         }
     }

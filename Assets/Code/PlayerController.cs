@@ -8,29 +8,23 @@ public class PlayerController : MonoBehaviour {
     private float runSpeed = 5;
 
     public VirtualJoystick joystick;
-    public VirtualJoystick joystickLook;
-    
-   
+    public VirtualJoystick joystickLook;   
 
     private Quaternion targetRotation;
 
-
     private  CharacterController controller;
-
+    public ProjectileScript projectileLauncher;
 
 	// Use this for initialization
 	void Start () {
 
         controller = GetComponent<CharacterController>();
         joystickLook.transform.position = new Vector2(joystickLook.canvasSize.x*3 / 4, joystickLook.canvasSize.y / 2);
-
-
     }
 	
 	// Update is called once per frame
 	void Update () {
-
-
+        
 	    //Get input from the joysticks
         Vector3 input = new Vector3 (joystick.Horizontal(), 0, joystick.Vertical());
         Vector3 lookInput = new Vector3(joystickLook.Horizontal(), 0, joystickLook.Vertical());
@@ -39,8 +33,10 @@ public class PlayerController : MonoBehaviour {
         if (lookInput != Vector3.zero) {
             targetRotation = Quaternion.LookRotation(lookInput);
             transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
-        }
 
+            //and shoot
+            projectileLauncher.Shoot();
+        }
 
         //Move player
         Vector3 motion = input;
