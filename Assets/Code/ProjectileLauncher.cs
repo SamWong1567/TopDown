@@ -2,9 +2,7 @@
 using System.Collections;
 
 
-public class ProjectileLauncher : MonoBehaviour {
-
-    public float projectileSpeed;
+public class ProjectileLauncher : MonoBehaviour {   
     public float rpm;
     
     //Components
@@ -31,6 +29,7 @@ public class ProjectileLauncher : MonoBehaviour {
 
         if (CanShoot()) {
 
+            //ignore ray for now
             Ray ray = new Ray(origin.position, origin.forward);
                      
             float shotDistance = 20;
@@ -40,14 +39,16 @@ public class ProjectileLauncher : MonoBehaviour {
                 shotDistance = hit.distance;
 
             }
-
-            nextPossibleShootTime = Time.time + secondsBetweenShots;
             Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red);
 
-            StartCoroutine("FireProjectile");
+
+            nextPossibleShootTime = Time.time + secondsBetweenShots;
+
+            //Instantiate the current projectile           
+            Rigidbody newProj = Instantiate(proj, transform.position, transform.rotation) as Rigidbody;
+           
             
         }
-
     }
 
     private bool CanShoot() {
@@ -59,19 +60,6 @@ public class ProjectileLauncher : MonoBehaviour {
         }
 
         return canShoot;
-
-    }
-
-    IEnumerator FireProjectile() {
-
-        Rigidbody newProj = Instantiate(proj, transform.position, transform.rotation) as Rigidbody;
-        //newProj.velocity = origin.forward * projectileSpeed;
-        while (newProj) {
-            newProj.transform.Translate(Vector3.forward * projectileSpeed*Time.deltaTime);
-            yield return null;
-        }
-
-               
 
     }
 }

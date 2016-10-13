@@ -42,7 +42,15 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Move player
-        Vector3 motion = input;
+        Vector3 motion;
+        if (input.magnitude!=0) {
+             motion = input;
+        }
+        else {
+
+            motion = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        }
+
         motion = (motion.magnitude > 1) ? motion.normalized : motion;
         motion += Vector3.up * -8;
         controller.Move(motion*walkSpeed * Time.deltaTime);

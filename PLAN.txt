@@ -39,6 +39,7 @@ PLAYER
 		Chain
 		Multiple Projectiles
 		Add AOE
+		Wall Bounce
 	
 	Recovery
 		Potion|| Health Pick up|| Health on Kill?

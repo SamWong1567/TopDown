@@ -94,22 +94,12 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         joystickImg.enabled = false;
     }
     
-    public float Horizontal() {
-
-        if (move.x != 0) {
-            return move.x;
-        } else {
-            return Input.GetAxisRaw("Horizontal");
-        }
+    public float Horizontal() {        
+            return move.x;                
     }
 
-        public float Vertical() {
-
-        if (move.y != 0) {
-            return move.y;
-        } else {
-            return Input.GetAxisRaw("Vertical");
-        }
+        public float Vertical() {        
+            return move.y;       
     }
     
 }
