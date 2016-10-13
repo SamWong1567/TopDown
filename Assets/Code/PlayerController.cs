@@ -7,13 +7,16 @@ public class PlayerController : MonoBehaviour {
     private float walkSpeed = 10;
     private float runSpeed = 5;
 
+    public ProjectileLauncher[] projs;
+    public ProjectileLauncher proj;
+     
     public VirtualJoystick joystick;
     public VirtualJoystick joystickLook;   
 
     private Quaternion targetRotation;
 
-    private  CharacterController controller;
-    public ProjectileScript projectileLauncher;
+    private CharacterController controller;
+    public ProjectileLauncher projectileLauncher;
 
 	// Use this for initialization
 	void Start () {
