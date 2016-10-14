@@ -8,11 +8,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     private Image bgImg;
     private Image joystickImg;
     private Image joystickKnob;
-    private Vector2 move;
-    private RectTransform canvas;
-    private RectTransform joystickRect;
-
-    public Vector2 canvasSize;
+    private Vector2 move;   
+    
     private Vector2 joystickOrigin;
 
     // Use this for initialization
@@ -20,9 +17,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 
         //Get components
         bgImg = GetComponent<Image>();
-        joystickImg = transform.GetChild(0).GetComponent<Image>();
-        canvas = transform.parent.gameObject.GetComponent<RectTransform>();
-        joystickRect = GetComponent<RectTransform>();
+        joystickImg = transform.GetChild(0).GetComponent<Image>();        
         joystickKnob = joystickImg.transform.GetChild(0).GetComponent<Image>();
 
         //joystick disabled on start
@@ -32,17 +27,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         //change color alpha of joystick boundaries to transparent
         Color color = bgImg.color;
         color.a = 0;
-        bgImg.color = color;
-
-        //get dimension of canvas
-        canvasSize = new Vector2(canvas.rect.width, canvas.rect.height);
-
-        
-        //set size of joystick to half of screen size        
-        joystickRect.sizeDelta = new Vector2(canvasSize.x/2,canvasSize.y);
-        transform.position = new Vector2(canvasSize.x / 4, canvasSize.y / 2);
-
-
+        bgImg.color = color;                  
     }
 	
 	// Update is called once per frame
@@ -94,7 +79,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         joystickImg.enabled = false;
     }
     
-    public float Horizontal() {        
+    public float Horizontal() {         
             return move.x;                
     }
 

@@ -45,9 +45,7 @@ public class ProjectileLauncher : MonoBehaviour {
             nextPossibleShootTime = Time.time + secondsBetweenShots;
 
             //Instantiate the current projectile           
-            Rigidbody newProj = Instantiate(proj, transform.position, transform.rotation) as Rigidbody;
-           
-            
+            Rigidbody newProj = Instantiate(proj, transform.position, transform.rotation) as Rigidbody;                      
         }
     }
 

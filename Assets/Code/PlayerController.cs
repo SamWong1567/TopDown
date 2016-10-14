@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     private float rotationSpeed = 1000;
     private float walkSpeed = 10;
-    private float runSpeed = 5;
+    private float runSpeed = 20;
 
     public ProjectileLauncher[] projs;
     public ProjectileLauncher proj;
@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour {
     private CharacterController controller;
     public ProjectileLauncher projectileLauncher;
 
+    public GameObject canvas;
+
 	// Use this for initialization
 	void Start () {
 
         controller = GetComponent<CharacterController>();
-        joystickLook.transform.position = new Vector2(joystickLook.canvasSize.x*3 / 4, joystickLook.canvasSize.y / 2);
+        canvas.SetActive(true);
     }
 	
 	// Update is called once per frame
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour {
         //Rotate player
         if (lookInput != Vector3.zero) {
             targetRotation = Quaternion.LookRotation(lookInput);
+            
             transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
 
             //and shoot
