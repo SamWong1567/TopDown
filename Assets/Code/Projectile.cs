@@ -34,7 +34,10 @@ public class Projectile : MonoBehaviour {
     void OnTriggerEnter(Collider col) {
         if (col.tag == "Obstacle") {
             if (col.GetComponent<Entity>()) {
-                col.GetComponent<Entity>().TakeDamage(damage);
+                col.GetComponent<Entity>().TakeDamage(damage);                
+            }
+            if (col.GetComponent<MockEnemyScript>()) {
+                col.GetComponent<MockEnemyScript>().UpdateHealth();
             }
             Destroy(gameObject);
         }

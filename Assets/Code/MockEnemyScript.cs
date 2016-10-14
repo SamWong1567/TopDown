@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MockEnemyScript : MonoBehaviour {
+public class MockEnemyScript : Entity {
 
     private Player player;
+    private GUI health;
 	// Use this for initialization
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        health = transform.GetChild(0).GetComponent<GUI>();
+
 	}
 
     void OnTriggerEnter(Collider c) {
@@ -20,5 +18,9 @@ public class MockEnemyScript : MonoBehaviour {
             player.UpdateHealth();
         }
 
+    }
+
+    public void UpdateHealth() {
+        health.SetHealth(currentHealth / maxHealth);
     }
 }
