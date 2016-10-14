@@ -13,9 +13,10 @@ public class PlayerController : MonoBehaviour {
     public VirtualJoystick joystick;
     public VirtualJoystick joystickLook;   
 
-    private Quaternion targetRotation;  
+    private Quaternion targetRotation;
 
-    private CharacterController controller;
+    //private CharacterController controller;
+    private Controller2D controller;
     public ProjectileLauncher projectileLauncher;
 
     public GameObject canvas;    
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 
         
-        controller = GetComponent<CharacterController>();
+        controller = GetComponent<Controller2D>();
         canvas.SetActive(true);
     }
 	
@@ -57,10 +58,10 @@ public class PlayerController : MonoBehaviour {
 
         motion = (motion.magnitude > 1) ? motion.normalized : motion;
 
-        
+        controller.Move(motion * walkSpeed * Time.deltaTime);
 
         //Below NEEDS to be changed as this does not take into account the game physics and causes the player to pass through objects
-        transform.Translate(motion * walkSpeed * Time.deltaTime,Space.World);
+        //transform.Translate(motion * walkSpeed * Time.deltaTime,Space.World);
 
         //motion += Vector3.up * -8;
         //controller.Move(motion*walkSpeed * Time.deltaTime);        

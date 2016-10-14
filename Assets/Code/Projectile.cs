@@ -3,31 +3,24 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
-    private float lifeTime = 4;
-    private float deathTime;
+    public float lifeTime = 4;
 
     public float damage;
     public float projectileSpeed;
 
+    
 	// Use this for initialization
-	void Start () {
-        deathTime = Time.time + lifeTime;
-        StartCoroutine("Destroy");
+	void Start () {       
+        StartCoroutine("Deploy");
+        Destroy(gameObject, lifeTime);
 	}
 
-    IEnumerator Destroy() {
-        while (true) {
+    IEnumerator Deploy() {
+        
             while (this) {
                 transform.Translate(Vector3.up * projectileSpeed * Time.deltaTime);
                 yield return null;
-            }
-
-            yield return new WaitForSeconds(.2f);
-            if (Time.time > deathTime) {
-                
-                Destroy(gameObject);
-            }
-        }       
+            }             
     }
 
 
