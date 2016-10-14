@@ -5,8 +5,8 @@ public class Projectile : MonoBehaviour {
 
     private float lifeTime = 4;
     private float deathTime;
-    public float damage;
 
+    public float damage;
     public float projectileSpeed;
 
 	// Use this for initialization
@@ -33,14 +33,17 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter(Collider col) {
         if (col.tag == "Obstacle") {
-            if (col.GetComponent<Entity>()) {
-                col.GetComponent<Entity>().TakeDamage(damage);                
-            }
+            Destroy(gameObject);
+        }
+        
+        if (col.tag == "Enemy") {
             if (col.GetComponent<MockEnemyScript>()) {
+                col.GetComponent<Entity>().TakeDamage(damage);
                 col.GetComponent<MockEnemyScript>().UpdateHealth();
             }
             Destroy(gameObject);
         }
+        
     }
 
 }
