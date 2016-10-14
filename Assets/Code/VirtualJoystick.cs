@@ -48,7 +48,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             move = new Vector2(pos.x, pos.y);
             move = (move.magnitude > 1.0f) ? move.normalized : move;
             
-            Vector2 joystickMove = new Vector2(move.x, move.y) * (joystickImg.rectTransform.sizeDelta.x / 2);
+            Vector2 joystickMove = move * (joystickImg.rectTransform.sizeDelta.x / 2);
             joystickKnob.rectTransform.anchoredPosition = joystickMove;
         }                                
     }
@@ -83,7 +83,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             return move.x;                
     }
 
-        public float Vertical() {        
+    public float Vertical() {        
             return move.y;       
     }
     

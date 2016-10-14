@@ -3,15 +3,16 @@ using System.Collections;
 
 public class Entity : MonoBehaviour {
 
-    public float health;
+    public float maxHealth;
+    public float currentHealth;
 
     public virtual void TakeDamage(float dmg) {
 
-        health -= dmg;
+        currentHealth -= dmg;
 
-        Debug.Log(health);
+        Debug.Log(currentHealth);
 
-        if (health <= 0) {
+        if (currentHealth <= 0) {
 
             Die();
         }

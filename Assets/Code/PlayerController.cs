@@ -36,13 +36,11 @@ public class PlayerController : MonoBehaviour {
 
         //Rotate player
         if (lookInput != Vector3.zero) {
-            targetRotation = Quaternion.LookRotation(lookInput);
-            
+            targetRotation = Quaternion.LookRotation(lookInput);            
             transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
-
             //and shoot
             projectileLauncher.Shoot();
-        }
+        } 
 
         //Move player
         Vector3 motion;
@@ -56,8 +54,6 @@ public class PlayerController : MonoBehaviour {
 
         motion = (motion.magnitude > 1) ? motion.normalized : motion;
         motion += Vector3.up * -8;
-        controller.Move(motion*walkSpeed * Time.deltaTime);
-
-        
+        controller.Move(motion*walkSpeed * Time.deltaTime);        
 	}
 }
