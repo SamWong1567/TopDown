@@ -7,7 +7,7 @@ public class ProjectileLauncher : MonoBehaviour {
     
     //Components
     public Transform origin;
-    public Rigidbody proj;
+    public GameObject proj;
    
     //System
     private float secondsBetweenShots;
@@ -45,7 +45,7 @@ public class ProjectileLauncher : MonoBehaviour {
             nextPossibleShootTime = Time.time + secondsBetweenShots;
 
             //Instantiate the current projectile           
-            Rigidbody newProj = Instantiate(proj, transform.position, transform.rotation) as Rigidbody;                      
+            GameObject newProj = Instantiate(proj, transform.position, transform.rotation) as GameObject;                      
         }
     }
 

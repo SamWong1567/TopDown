@@ -14,8 +14,6 @@ public class MockEnemyScript : Entity {
 
 	}
 
-
-
     public void UpdateHealth() {
         health.SetHealth(currentHealth / maxHealth);
     }

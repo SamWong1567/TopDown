@@ -11,7 +11,7 @@ public class EnemyDamageOnTouch : MonoBehaviour {
        
 
     }
-    void OnTriggerEnter(Collider c) {
+    void OnTriggerEnter2D(Collider2D c) {
         if (c.tag == "Player") {
             player.TakeDamage(enemy.damageOnTouch);
             player.UpdateHealth();

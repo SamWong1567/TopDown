@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour {
     IEnumerator Destroy() {
         while (true) {
             while (this) {
-                transform.Translate(Vector3.forward * projectileSpeed * Time.deltaTime);
+                transform.Translate(Vector3.up * projectileSpeed * Time.deltaTime);
                 yield return null;
             }
 
@@ -31,18 +31,26 @@ public class Projectile : MonoBehaviour {
     }
 
 
-    void OnTriggerEnter(Collider col) {
-        if (col.tag == "Obstacle") {
+    void OnCollisionEnter2D(Collision2D col) {
+        //Debug.Log("Collided");
+       
+        GameObject c = col.gameObject;
+
+        //If hits obstacle destroy proj
+        if (c.tag == "Obstacle") {
             Destroy(gameObject);
         }
-        
-        if (col.tag == "Enemy") {
-            if (col.GetComponent<MockEnemyScript>()) {
-                col.GetComponent<Entity>().TakeDamage(damage);
-                col.GetComponent<MockEnemyScript>().UpdateHealth();
+        //if hit enemy, enemy takes damage, enemy health bar updates, destroy proj
+        if (c.tag == "Enemy") {
+
+            if (c.GetComponent<MockEnemyScript>()) {
+                Destroy(gameObject);
+                Debug.Log("Collided with enemy");
+                c.GetComponent<Entity>().TakeDamage(damage);
+                c.GetComponent<MockEnemyScript>().UpdateHealth();
             }
-            Destroy(gameObject);
-        }
+            
+        }        
         
     }
 
