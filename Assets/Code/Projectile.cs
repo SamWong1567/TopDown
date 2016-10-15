@@ -2,22 +2,28 @@
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
-
-    public float lifeTime = 4;
-
+    
+    //Variables
+    public float lifeTime = 4;   
     public float damage;
     public float projectileSpeed;
-    private Rigidbody2D rigidProj;
     public Vector2 direction;
+
+    //Components
+    private Rigidbody2D rigidProj;
     
-	// Use this for initialization
+    
 	void Start () {
-        direction = new Vector2(transform.up.x, transform.up.y);
+        //Get Components
         rigidProj = GetComponent<Rigidbody2D>();
-        Debug.Log(direction);
-        //StartCoroutine("Deploy");
+
+        //Get where the ball is facing when instantiated. This is in line with the parent Projectile Launcher
+        direction = new Vector2(transform.up.x, transform.up.y);
+        
+        Debug.Log(direction);        
         Destroy(gameObject, lifeTime);
-	}
+        //StartCoroutine("Deploy");
+    }
 
     void FixedUpdate() {
 
@@ -25,13 +31,12 @@ public class Projectile : MonoBehaviour {
     }
    
 
-    IEnumerator Deploy() {
-        
-            while (this) {
-                transform.Translate(Vector3.up * projectileSpeed * Time.deltaTime);
-                yield return null;
-            }             
-    }
+    //IEnumerator Deploy() {        
+    //        while (this) {
+    //            transform.Translate(Vector3.up * projectileSpeed * Time.deltaTime);
+    //            yield return null;
+    //        }             
+    //}
 
 
     void OnCollisionEnter2D(Collision2D col) {

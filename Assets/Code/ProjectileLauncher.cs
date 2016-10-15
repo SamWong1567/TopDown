@@ -3,7 +3,9 @@ using System.Collections;
 
 
 public class ProjectileLauncher : MonoBehaviour {   
+
     public float rpm;
+    
     
     //Components
     public Transform origin;
@@ -29,23 +31,27 @@ public class ProjectileLauncher : MonoBehaviour {
 
         if (CanShoot()) {
 
-            //ignore ray for now
-            Ray ray = new Ray(origin.position, origin.forward);
-                     
-            float shotDistance = 20;
+            ////ignore ray for now
+            //Ray ray = new Ray(origin.position, origin.up);
+            float shotDistance = 100;
+            //if (Physics.Raycast(ray, out hit, shotDistance)) {
 
-            if (Physics.Raycast(ray, out hit, shotDistance)) {
+            //    // shotDistance = hit.distance;
 
-                shotDistance = hit.distance;
+            //}
 
-            }
-            Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red);
+            //Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 2);
 
+            Ray2D ray = new Ray2D(origin.position, origin.up);
+            RaycastHit2D hit = Physics2D.Raycast(origin.position, origin.up, shotDistance);
+            shotDistance = hit.distance;
+            Debug.Log(hit.distance);
+            Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 2);
 
             nextPossibleShootTime = Time.time + secondsBetweenShots;
 
             //Instantiate the current projectile           
-            GameObject newProj = Instantiate(proj, transform.position, transform.rotation) as GameObject;                      
+            //GameObject newProj = Instantiate(proj, transform.position, transform.rotation) as GameObject;                      
         }
     }
 

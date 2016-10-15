@@ -3,31 +3,30 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    //Variables
     private float rotationSpeed = 1000;
     private float walkSpeed = 10;
     private Vector2 velocity;
 
+    
     public ProjectileLauncher[] projs;
     public ProjectileLauncher proj;
-     
-    public VirtualJoystick joystick;
-    public VirtualJoystick joystickLook;   
 
+    //Components
+    public VirtualJoystick joystick;
+    public VirtualJoystick joystickLook;
+    public ProjectileLauncher projectileLauncher;
+    private Rigidbody2D rigidbodyPlayer;
+    public GameObject canvas;
+
+    //System
     private Quaternion targetRotation;
 
-    //private CharacterController controller;
-    //private Controller2D controller;
-    public ProjectileLauncher projectileLauncher;
-    private Rigidbody2D rigidbody2D;
-
-
-    public GameObject canvas;    
+    
 
 	void Start () {
-
-
-        // = GetComponent<Controller2D>();
-        rigidbody2D = GetComponent<Rigidbody2D>();
+   
+        rigidbodyPlayer = GetComponent<Rigidbody2D>();
         canvas.SetActive(true);
     }
 	
@@ -42,16 +41,23 @@ public class PlayerController : MonoBehaviour {
             targetRotation = Quaternion.LookRotation(lookInput);
             targetRotation = Quaternion.Inverse(targetRotation);
             //Debug.Log(targetRotation);
-            //Debug.Log(targetRotation.eulerAngles);      
+            //Debug.Log(targetRotation.eulerAngles); 
+
+            //Below used for smoother rotation     
             //transform.eulerAngles = Vector3.forward * Mathf.MoveTowardsAngle(transform.eulerAngles.z, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
+
             transform.eulerAngles = Vector3.forward * targetRotation.eulerAngles.y;
            
             //and shoot
             projectileLauncher.Shoot();
-        } 
+        }
 
-        //Move player
+        //Shoot when spacebar is pressed, Used only when testing on PC
+        if (Input.GetKeyDown("space")) {
+            projectileLauncher.Shoot();
+        }
         
+        //Get move direction and velocity
         if (input.magnitude!=0) {
              velocity = input;
         }
@@ -74,6 +80,7 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate() {
 
-        rigidbody2D.MovePosition(rigidbody2D.position + velocity * Time.fixedDeltaTime);
+        //Move Player
+        rigidbodyPlayer.MovePosition(rigidbodyPlayer.position + velocity * Time.fixedDeltaTime);
     }
 }
