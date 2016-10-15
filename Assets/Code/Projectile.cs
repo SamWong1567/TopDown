@@ -7,13 +7,23 @@ public class Projectile : MonoBehaviour {
 
     public float damage;
     public float projectileSpeed;
-
+    private Rigidbody2D rigidProj;
+    public Vector2 direction;
     
 	// Use this for initialization
-	void Start () {       
-        StartCoroutine("Deploy");
+	void Start () {
+        direction = new Vector2(transform.up.x, transform.up.y);
+        rigidProj = GetComponent<Rigidbody2D>();
+        Debug.Log(direction);
+        //StartCoroutine("Deploy");
         Destroy(gameObject, lifeTime);
 	}
+
+    void FixedUpdate() {
+
+        rigidProj.MovePosition(rigidProj.position +  direction * projectileSpeed * Time.fixedDeltaTime);
+    }
+   
 
     IEnumerator Deploy() {
         

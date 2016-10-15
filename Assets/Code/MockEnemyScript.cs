@@ -17,4 +17,14 @@ public class MockEnemyScript : Entity {
     public void UpdateHealth() {
         health.SetHealth(currentHealth / maxHealth);
     }
+
+    void OnCollisionEnter2D(Collision2D col) {
+        GameObject c = col.gameObject;
+        if (c.tag == "Player") {
+            player.TakeDamage(damageOnTouch);
+            player.UpdateHealth();
+
+        }
+
+    }
 }

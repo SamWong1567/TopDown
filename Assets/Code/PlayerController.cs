@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     private float rotationSpeed = 1000;
     private float walkSpeed = 10;
-    private float runSpeed = 20;
+    private Vector2 velocity;
 
     public ProjectileLauncher[] projs;
     public ProjectileLauncher proj;
@@ -16,15 +16,18 @@ public class PlayerController : MonoBehaviour {
     private Quaternion targetRotation;
 
     //private CharacterController controller;
-    private Controller2D controller;
+    //private Controller2D controller;
     public ProjectileLauncher projectileLauncher;
+    private Rigidbody2D rigidbody2D;
+
 
     public GameObject canvas;    
 
 	void Start () {
 
-        
-        controller = GetComponent<Controller2D>();
+
+        // = GetComponent<Controller2D>();
+        rigidbody2D = GetComponent<Rigidbody2D>();
         canvas.SetActive(true);
     }
 	
@@ -40,25 +43,27 @@ public class PlayerController : MonoBehaviour {
             targetRotation = Quaternion.Inverse(targetRotation);
             //Debug.Log(targetRotation);
             //Debug.Log(targetRotation.eulerAngles);      
-            transform.eulerAngles = Vector3.forward * Mathf.MoveTowardsAngle(transform.eulerAngles.z, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
+            //transform.eulerAngles = Vector3.forward * Mathf.MoveTowardsAngle(transform.eulerAngles.z, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
+            transform.eulerAngles = Vector3.forward * targetRotation.eulerAngles.y;
            
             //and shoot
             projectileLauncher.Shoot();
         } 
 
         //Move player
-        Vector2 motion;
+        
         if (input.magnitude!=0) {
-             motion = input;
+             velocity = input;
         }
         else {
 
-            motion = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
+            velocity = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
         }
 
-        motion = (motion.magnitude > 1) ? motion.normalized : motion;
+        //Direction of Movement
+        velocity = ((velocity.magnitude > 1) ? velocity.normalized : velocity)*walkSpeed;
 
-        controller.Move(motion * walkSpeed * Time.deltaTime);
+        //controller.Move(motion * walkSpeed * Time.deltaTime);
 
         //Below NEEDS to be changed as this does not take into account the game physics and causes the player to pass through objects
         //transform.Translate(motion * walkSpeed * Time.deltaTime,Space.World);
@@ -66,4 +71,9 @@ public class PlayerController : MonoBehaviour {
         //motion += Vector3.up * -8;
         //controller.Move(motion*walkSpeed * Time.deltaTime);        
 	}
+
+    void FixedUpdate() {
+
+        rigidbody2D.MovePosition(rigidbody2D.position + velocity * Time.fixedDeltaTime);
+    }
 }
