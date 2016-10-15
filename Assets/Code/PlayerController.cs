@@ -5,8 +5,9 @@ public class PlayerController : MonoBehaviour {
 
     //Variables
     private float rotationSpeed = 1000;
-    private float walkSpeed = 10;
+    private float walkSpeed = 15;
     private Vector2 velocity;
+    private Vector3 lookDirection;
 
     
     public ProjectileLauncher[] projs;
@@ -36,9 +37,15 @@ public class PlayerController : MonoBehaviour {
         Vector2 input = new Vector2 (joystick.Horizontal(),joystick.Vertical());
         Vector3 lookInput = new Vector3(joystickLook.Horizontal(),0,joystickLook.Vertical());
 
+        if (lookInput.magnitude != 0) {
+            lookDirection = lookInput;
+        }
+        else {
+            lookDirection = new Vector3(Input.GetAxisRaw("HorizontalLook"),0,Input.GetAxisRaw("VerticalLook"));
+        }
         //Rotate player
-        if (lookInput != Vector3.zero) {
-            targetRotation = Quaternion.LookRotation(lookInput);
+        if (lookDirection.magnitude != 0){
+            targetRotation = Quaternion.LookRotation(lookDirection);
             targetRotation = Quaternion.Inverse(targetRotation);
             //Debug.Log(targetRotation);
             //Debug.Log(targetRotation.eulerAngles); 
@@ -47,9 +54,11 @@ public class PlayerController : MonoBehaviour {
             //transform.eulerAngles = Vector3.forward * Mathf.MoveTowardsAngle(transform.eulerAngles.z, targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
 
             transform.eulerAngles = Vector3.forward * targetRotation.eulerAngles.y;
-           
-            //and shoot
-            projectileLauncher.Shoot();
+
+            //and shoot if using joystick
+            if (lookInput.magnitude != 0) {              
+                projectileLauncher.Shoot();
+            }
         }
 
         //Shoot when spacebar is pressed, Used only when testing on PC
