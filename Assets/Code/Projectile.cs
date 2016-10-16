@@ -8,17 +8,23 @@ public class Projectile : MonoBehaviour {
     public float damage;
     public float projectileSpeed;
     public float size;
-    public int percentChanceToPierce;
+    
     public Vector2 projectileDirection;
     public LayerMask layerMaskToBeCollided;
     public float knockBackStrength;
+
+    [Range(0,1)]
+    public float percentChanceToPierce;
+
+    [Range(0,1)]
     public float percentReflectedDamage;
 
     //Components
     //private Rigidbody2D rigidProj;
    
     //System
-    private float recentlyHitId=0;
+    public float recentlyHitId { get; set; }
+    public float projectileInstanceId { get; set; }
     private float moveDistance;
     private bool canPierce;
 
@@ -28,6 +34,9 @@ public class Projectile : MonoBehaviour {
         transform.localScale = Vector3.one*size;
         //Get where the ball is facing when instantiated. This is in line with the parent Projectile Launcher
         projectileDirection = Vector2.up;
+
+        //Give an Id to the new instance of proj
+        projectileInstanceId = Time.time + (Random.Range(0, 100));
     
         //Destroy projectile after lifeTime (seconds) has passed
         Destroy(gameObject, lifeTime);
@@ -50,9 +59,9 @@ public class Projectile : MonoBehaviour {
     void CheckPierce() {
 
         //RNG for pierce
-        int projRNGRoll = Random.Range(1, 100);
+        float projRNGRoll = Random.Range(1,100);
         //Debug.Log("RNG: "+projRNGRoll);
-        if (percentChanceToPierce >= projRNGRoll) {
+        if (percentChanceToPierce*100 >= projRNGRoll) {
 
             canPierce = true;
         }
@@ -72,15 +81,16 @@ public class Projectile : MonoBehaviour {
                 if (recentlyHitId != enemyScript.enemyInstanceID) {
                     //Knockback
                     Rigidbody2D cRigid = c.GetComponent<Rigidbody2D>();
-                    cRigid.AddForce(transform.TransformDirection(projectileDirection) * knockBackStrength);
+                    cRigid.AddForce(transform.TransformDirection(Vector3.up) * knockBackStrength);
                     enemyScript.TakeDamage(damage);
+
                 }
 
                 //Set recentlyHitId to the enemy that was just hit
                 recentlyHitId = enemyScript.enemyInstanceID;
 
                 //If projectile cant pierce then destroy it
-                if (!canPierce) {
+                if (!canPierce && !(c.GetComponent<Bouncy>())) {
                     Destroy(gameObject);
                 }
 
@@ -92,9 +102,8 @@ public class Projectile : MonoBehaviour {
             }
 
             if (c.tag == "Player") {
-
                 Destroy(gameObject);
-                c.gameObject.GetComponent<Entity>().TakeDamage(damage*percentReflectedDamage/100);
+                c.gameObject.GetComponent<Entity>().TakeDamage(damage*percentReflectedDamage);
             }
         }
     }

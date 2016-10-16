@@ -6,7 +6,7 @@ public class Enemy : Entity {
     //public Variables
     public float damageOnTouch;
     public float moveSpeed;
-    
+    public int enemyId;
 
     //System
     private Vector2 playerDirection;
@@ -58,7 +58,10 @@ public class Enemy : Entity {
 
     public override void Die() {
         base.Die();
-        EnemyDeath();
+
+        if (EnemyDeath != null) {
+            EnemyDeath();
+        }
 
     }
 }

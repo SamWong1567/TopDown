@@ -3,37 +3,20 @@ using System.Collections;
 
 public class Bouncy : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
+    private float projectileId=1f;
+    Projectile projectileScript;
     void OnTriggerEnter2D(Collider2D col) {
 
         GameObject c = col.gameObject;
         
+
         if (c.tag == "Projectile") {
-            Projectile projectileScript = c.GetComponent<Projectile>();
-            projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
-
-            //Set projectile collider layer mask to collide with player layer ONLY
-            projectileScript.layerMaskToBeCollided.value = 1 << 9;
-
+            projectileScript = c.GetComponent<Projectile>();
+            //To prevent projectile from bouncing again
+            if (projectileId != projectileScript.projectileInstanceId) {
+                projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
+                projectileId = projectileScript.projectileInstanceId;
+            }
         }
     }
-
-    //void OnCollisionEnter2D(Collision2D col) {
-
-    //    GameObject c = col.gameObject;
-
-    //    if (c.tag == "Projectile") {
-    //        c.GetComponent<Projectile>().projectileDirection = c.GetComponent<Projectile>().projectileDirection * -1;
-    //    }
-
-    //    }
-    }
+}
