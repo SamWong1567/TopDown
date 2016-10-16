@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PuIncreaseProjectileCount : MonoBehaviour {
+public class PuPierce : MonoBehaviour {
 
     void Update() {
 
@@ -12,7 +12,7 @@ public class PuIncreaseProjectileCount : MonoBehaviour {
 
         if (col.tag == "Player") {
             ProjectileLauncher projLauncher = c.transform.GetChild(0).GetComponent<ProjectileLauncher>();
-            projLauncher.numberOfProj += 3;
+            projLauncher.UpdatePierce(100);
             Destroy(gameObject);
 
         }

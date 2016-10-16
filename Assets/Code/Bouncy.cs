@@ -16,9 +16,14 @@ public class Bouncy : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D col) {
 
         GameObject c = col.gameObject;
-
+        
         if (c.tag == "Projectile") {
-            c.GetComponent<Projectile>().projectileDirection = c.GetComponent<Projectile>().projectileDirection * -1;
+            Projectile projectileScript = c.GetComponent<Projectile>();
+            projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
+
+            //Set projectile collider layer mask to collide with player layer ONLY
+            projectileScript.layerMaskToBeCollided.value = 1 << 9;
+
         }
     }
 

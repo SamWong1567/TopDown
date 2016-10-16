@@ -11,7 +11,7 @@ public class Enemy : Entity {
     //System
     private Vector2 playerDirection;
     public float enemyInstanceID { get; set; }
-
+    public event System.Action EnemyDeath;
     //Components
     private GameObject player;
     private Rigidbody2D enemyRigidbody;
@@ -53,6 +53,12 @@ public class Enemy : Entity {
             player.GetComponent<Player>().TakeDamage(damageOnTouch);
             player.GetComponent<Player>().UpdateHealth();
         }
+
+    }
+
+    public override void Die() {
+        base.Die();
+        EnemyDeath();
 
     }
 }

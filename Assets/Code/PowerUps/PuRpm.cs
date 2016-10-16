@@ -12,7 +12,7 @@ public class PuRpm : MonoBehaviour {
         if (col.tag == "Player") {
             print("hit player");
             ProjectileLauncher projLauncher = c.transform.GetChild(0).GetComponent<ProjectileLauncher>();
-            projLauncher.UpdateRPM(25f);
+            projLauncher.UpdateRPM(100);
             Destroy(gameObject);
 
         }

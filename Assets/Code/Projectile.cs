@@ -3,27 +3,29 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
     
-    //Variables
+    //public Variables
     public float lifeTime = 4;   
     public float damage;
     public float projectileSpeed;
+    public float size;
+    public int percentChanceToPierce;
     public Vector2 projectileDirection;
     public LayerMask layerMaskToBeCollided;
-    public int percentChanceToPierce;
-    public bool canPierce;
     public float knockBackStrength;
-    private float moveDistance;
+    public float percentReflectedDamage;
 
     //Components
     //private Rigidbody2D rigidProj;
    
     //System
     private float recentlyHitId=0;
-    
-	void Start () {
+    private float moveDistance;
+    private bool canPierce;
+
+    void Start () {
         //Get Components
         //rigidProj = GetComponent<Rigidbody2D>();
-
+        transform.localScale = Vector3.one*size;
         //Get where the ball is facing when instantiated. This is in line with the parent Projectile Launcher
         projectileDirection = Vector2.up;
     
@@ -65,12 +67,17 @@ public class Projectile : MonoBehaviour {
             if (c.tag == "Enemy") {
 
                 Enemy enemyScript = c.GetComponent<Enemy>();
+
+                //Check if projectile has already hit the enemy with the matching recentlyHitId
                 if (recentlyHitId != enemyScript.enemyInstanceID) {
                     //Knockback
                     Rigidbody2D cRigid = c.GetComponent<Rigidbody2D>();
                     cRigid.AddForce(transform.TransformDirection(projectileDirection) * knockBackStrength);
                     enemyScript.TakeDamage(damage);
                 }
+
+                //Set recentlyHitId to the enemy that was just hit
+                recentlyHitId = enemyScript.enemyInstanceID;
 
                 //If projectile cant pierce then destroy it
                 if (!canPierce) {
@@ -82,6 +89,12 @@ public class Projectile : MonoBehaviour {
             //If triggers Obstacle, Destroy Projectile
             if (c.tag == "Obstacle") {
                 Destroy(gameObject);
+            }
+
+            if (c.tag == "Player") {
+
+                Destroy(gameObject);
+                c.gameObject.GetComponent<Entity>().TakeDamage(damage*percentReflectedDamage/100);
             }
         }
     }
