@@ -16,7 +16,7 @@ public class CameraScript : MonoBehaviour {
     void Update() {
         if (target) {
             cameraTarget = new Vector3(target.position.x, target.position.y, transform.position.z);
-            transform.position = Vector3.Lerp(transform.position, cameraTarget, Time.deltaTime * 6);
+            transform.position = Vector3.Lerp(transform.position, cameraTarget, Time.deltaTime * 15);
         }
 
     }

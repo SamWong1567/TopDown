@@ -1,0 +1,19 @@
+Class Heirarchy
+
+ENTITY
+		Health
+		TakeDamage()
+	
+	PLAYER
+	ENEMY
+		Damage on touch
+	
+PROJECTILE LAUNCHER
+	RPM
+	No. of Projectiles
+	
+	
+PROJECTILE
+	Speed
+	Life Time
+	Chance to pierce

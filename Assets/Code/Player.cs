@@ -4,18 +4,13 @@ using System.Collections;
 
 public class Player : Entity {
     //Components
-    private GUI gui;
 
-    void Start() {
+    public override void Start() {
+        base.Start();
         //Get Components
-        gui = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
+        healthGUI = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
         UpdateHealth();
 
-    }
-
-    //Update health displayed on GUI
-    public void UpdateHealth() {       
-        gui.SetHealth(currentHealth/maxHealth);
     }
 
 }

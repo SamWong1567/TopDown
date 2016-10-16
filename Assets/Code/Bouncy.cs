@@ -14,15 +14,21 @@ public class Bouncy : MonoBehaviour {
 	}
 
     void OnTriggerEnter2D(Collider2D col) {
-        
+
         GameObject c = col.gameObject;
 
         if (c.tag == "Projectile") {
-            c.GetComponent<Projectile>().direction = c.GetComponent<Projectile>().direction * -1;
-
-
-
+            c.GetComponent<Projectile>().projectileDirection = c.GetComponent<Projectile>().projectileDirection * -1;
         }
-
     }
-}
+
+    //void OnCollisionEnter2D(Collision2D col) {
+
+    //    GameObject c = col.gameObject;
+
+    //    if (c.tag == "Projectile") {
+    //        c.GetComponent<Projectile>().projectileDirection = c.GetComponent<Projectile>().projectileDirection * -1;
+    //    }
+
+    //    }
+    }
