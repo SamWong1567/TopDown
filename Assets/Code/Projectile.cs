@@ -1,46 +1,47 @@
-﻿using UnityEngine;
+﻿    using UnityEngine;
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
-    
+
     //public Variables
-    public float lifeTime = 4;   
+    public float lifeTime = 4;
     public float damage;
     public float projectileSpeed;
     public float size;
-    
+
     public Vector2 projectileDirection;
     public LayerMask layerMaskToBeCollided;
     public float knockBackStrength;
 
-    [Range(0,1)]
-    public float percentChanceToPierce;
+    public float percentChanceToPierce { get; set; }
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float percentReflectedDamage;
 
     //Components
     //private Rigidbody2D rigidProj;
-   
+
     //System
     public float recentlyHitId { get; set; }
     public float projectileInstanceId { get; set; }
     private float moveDistance;
     private bool canPierce;
+    Enemy enemyScript;
+    Rigidbody2D cRigid;
 
-    void Start () {
+    void Start() {
         //Get Components
         //rigidProj = GetComponent<Rigidbody2D>();
-        transform.localScale = Vector3.one*size;
+        transform.localScale = Vector3.one * size;
         //Get where the ball is facing when instantiated. This is in line with the parent Projectile Launcher
         projectileDirection = Vector2.up;
 
         //Give an Id to the new instance of proj
         projectileInstanceId = Time.time + (Random.Range(0, 100));
-    
+
         //Destroy projectile after lifeTime (seconds) has passed
         Destroy(gameObject, lifeTime);
-       
+
         CheckPierce();
     }
 
@@ -59,41 +60,48 @@ public class Projectile : MonoBehaviour {
     void CheckPierce() {
 
         //RNG for pierce
-        float projRNGRoll = Random.Range(1,100);
+        float projRNGRoll = Random.Range(1, 100);
         //Debug.Log("RNG: "+projRNGRoll);
-        if (percentChanceToPierce*100 >= projRNGRoll) {
+        if (percentChanceToPierce * 100 >= projRNGRoll) {
 
             canPierce = true;
         }
     }
-  
-    void OnTriggerEnter2D(Collider2D col) {
+
+    public virtual void OnTriggerEnter2D(Collider2D col) {
 
         GameObject c = col.gameObject;
+
         //Check with layer mask which layers can the projectile interact with
         if ((layerMaskToBeCollided.value & 1 << c.layer) != 0) {
 
             if (c.tag == "Enemy") {
+                enemyScript = c.GetComponent<Enemy>();
+                EnemyMods enemyModsScript = c.GetComponent<EnemyMods>();
 
-                Enemy enemyScript = c.GetComponent<Enemy>();
+                if (!ObjectHasAlreadyBeenHit()) {
+                    cRigid = c.GetComponent<Rigidbody2D>();
 
-                //Check if projectile has already hit the enemy with the matching recentlyHitId
-                if (recentlyHitId != enemyScript.enemyInstanceID) {
                     //Knockback
-                    Rigidbody2D cRigid = c.GetComponent<Rigidbody2D>();
-                    cRigid.AddForce(transform.TransformDirection(Vector3.up) * knockBackStrength);
+                    enemyScript.KnockBackCaller();
+                    //Enemy takes damage
                     enemyScript.TakeDamage(damage);
-
+                    //Set recentlyHitId to the enemy that was just hit
+                    recentlyHitId = enemyScript.enemyInstanceID;
                 }
-
-                //Set recentlyHitId to the enemy that was just hit
-                recentlyHitId = enemyScript.enemyInstanceID;
 
                 //If projectile cant pierce then destroy it
-                if (!canPierce && !(c.GetComponent<Bouncy>())) {
+                if (enemyModsScript) {
+                    if (!enemyModsScript.reflect) {
+
+                        Destroy(gameObject);
+                    }
+                }else
+                if (!canPierce) {
+
                     Destroy(gameObject);
                 }
-
+               
             }
 
             //If triggers Obstacle, Destroy Projectile
@@ -103,12 +111,22 @@ public class Projectile : MonoBehaviour {
 
             if (c.tag == "Player") {
                 Destroy(gameObject);
-                c.gameObject.GetComponent<Entity>().TakeDamage(damage*percentReflectedDamage);
+                c.gameObject.GetComponent<Entity>().TakeDamage(damage * percentReflectedDamage);
             }
         }
     }
 
+    bool ObjectHasAlreadyBeenHit() {
 
+        //Check if projectile has already hit the enemy with the matching recentlyHitId
+        if (recentlyHitId == enemyScript.enemyInstanceID) {
+
+            return true;
+        }
+
+        return false;
+
+    }
     //BELOW ARE UNUSED CODE
 
     //void FixedUpdate() {

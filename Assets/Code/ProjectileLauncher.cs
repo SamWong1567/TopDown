@@ -6,7 +6,9 @@ public class ProjectileLauncher : MonoBehaviour {
 
     //Public variables
     public float rpm;
-    public int chanceToPierce;
+
+    [Range (0,1)]
+    public float chanceToPierce;
     public int numberOfProj;
     public LayerMask mask;
 
@@ -63,10 +65,7 @@ public class ProjectileLauncher : MonoBehaviour {
             projectileAngle[i] = Quaternion.Euler(0, 0, initialAngle.eulerAngles.z + i * 10);           
         }
     }
-    public void UpdatePierce(int changeInPierce) {
-        chanceToPierce += changeInPierce;
-    }
-
+  
     private bool CanShoot() {
  
         bool canShoot = true;
@@ -79,7 +78,11 @@ public class ProjectileLauncher : MonoBehaviour {
 
     }
 
-    public void UpdateRPM(float changeInRPM) {
+    public void UpdatePierce(float changeInPierce) {
+        chanceToPierce += changeInPierce;
+    }
+
+    public void UpdateRPM(int changeInRPM) {
 
         rpm += changeInRPM;
         secondsBetweenShots = 60 / rpm;

@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PuRpm : MonoBehaviour {
+    public int increaseAmount;
     void Update() {
 
         transform.Rotate(Vector3.forward*360*Time.deltaTime);
@@ -11,7 +12,7 @@ public class PuRpm : MonoBehaviour {
 
         if (col.tag == "Player") {
             ProjectileLauncher projLauncher = c.transform.GetChild(0).GetComponent<ProjectileLauncher>();
-            projLauncher.UpdateRPM(100);
+            projLauncher.UpdateRPM(increaseAmount);
             Destroy(gameObject);
 
         }

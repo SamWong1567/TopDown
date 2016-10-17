@@ -5,7 +5,7 @@ public class Entity : MonoBehaviour {
 
     //Public Variables
     public float maxHealth;
-    protected float currentHealth;
+    public float currentHealth { get; set; }
     public GUI healthGUI { get; set; }
 
     public virtual void Start() {
@@ -24,7 +24,15 @@ public class Entity : MonoBehaviour {
         }
 
     }
+    public virtual void Heal(float healAmount) {
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth) {
 
+            currentHealth = maxHealth;
+        }
+        UpdateHealth();
+
+    }
     public virtual void Die(){
         //Debug.Log("Dead");
         Destroy(gameObject);

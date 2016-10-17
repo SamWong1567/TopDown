@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PuIncreaseProjectileCount : MonoBehaviour {
-
+    public int increaseAmout;
     void Update() {
 
         transform.Rotate(Vector3.forward * 360 * Time.deltaTime);
@@ -12,7 +12,7 @@ public class PuIncreaseProjectileCount : MonoBehaviour {
 
         if (col.tag == "Player") {
             ProjectileLauncher projLauncher = c.transform.GetChild(0).GetComponent<ProjectileLauncher>();
-            projLauncher.numberOfProj += 3;
+            projLauncher.numberOfProj += increaseAmout;
             Destroy(gameObject);
 
         }
