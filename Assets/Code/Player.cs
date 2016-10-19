@@ -4,6 +4,7 @@ using System.Collections;
 
 public class Player : Entity {
     //Components
+    public event System.Action OnPlayerDeath;
 
     public override void Start() {
         base.Start();
@@ -11,5 +12,10 @@ public class Player : Entity {
         healthGUI = GameObject.FindGameObjectWithTag("GUI").GetComponent<GUI>();
         UpdateHealth();
 
+    }
+
+    public override void Die() {
+        base.Die();
+        OnPlayerDeath();
     }
 }

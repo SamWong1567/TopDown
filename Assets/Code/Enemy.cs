@@ -98,6 +98,7 @@ public class Enemy : Entity {
 
             while (knockBackStartTime + knockBackDuration > Time.time) {
                 enemyRigidbody.MovePosition(transform.position + projectileDirectionOnImpact * projectileKnockBackStrength * Time.deltaTime);
+                print("knocked back");
                 yield return null;
             }
             currentState = State.Moving;
@@ -114,7 +115,7 @@ public class Enemy : Entity {
 
         int rng = UnityEngine.Random.Range(1, 100);
 
-        if (10 > rng) {
+        if (50 > rng) {
             Instantiate(healGlobe, transform.position, Quaternion.identity);
         }
 

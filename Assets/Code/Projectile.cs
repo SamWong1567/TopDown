@@ -43,7 +43,7 @@ public class Projectile : MonoBehaviour {
         projectileInstanceId = Time.time + (Random.Range(0, 100));
 
         //Destroy projectile after lifeTime (seconds) has passed
-        Destroy(gameObject, lifeTime);
+        Invoke("DestroyThis", lifeTime);
 
         CheckPierce();
        //hitColliders = Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y), 20, overlapCircleCollider);
@@ -76,6 +76,10 @@ public class Projectile : MonoBehaviour {
             //print(targetRotation.eulerAngles);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+    }
+    void DestroyThis() {
+
+        Destroy(gameObject);
     }
 
     void OnDrawGizmos() {
@@ -154,6 +158,11 @@ public class Projectile : MonoBehaviour {
 
         return false;
 
+    }
+
+    public void CancelDestroy() {
+
+        CancelInvoke("DestroyThis");
     }
     //BELOW ARE UNUSED CODE
 

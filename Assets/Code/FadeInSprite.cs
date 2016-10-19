@@ -19,7 +19,7 @@ public class FadeInSprite : MonoBehaviour {
     }
     void Update() {
         t = (Time.time - startTime) / duration;
-        sprite.color = new Color(1f, 0f, 0f, Mathf.PingPong(Time.time*4,1));
+        sprite.color = new Color(1f, 0.5f, 0f, Mathf.PingPong(Time.time*4,1));
         float pingpong = Mathf.PingPong(Time.time * 2, 1);
         sprite.transform.localScale = new Vector3(Mathf.Lerp(0, 7, t), Mathf.Lerp(0, 7, t), 0);
     }

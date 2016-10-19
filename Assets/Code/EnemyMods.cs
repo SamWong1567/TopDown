@@ -77,11 +77,12 @@ public class EnemyMods : Enemy {
 
     void Reflect() {
 
-        if (projectileId != projectileScript.projectileInstanceId) {
+        if (projectileId != projectileScript.projectileInstanceId && onTriggerEnterObject!=null) {
             //Reflect
             projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
             onTriggerEnterObject.GetComponent<Renderer>().material.color = Color.blue;
             //change projectile layermask to only hit player
+            projectileScript.CancelDestroy();
             projectileScript.layerMaskToBeCollided.value -= 1 << 11;
             projectileScript.layerMaskToBeCollided.value += 1 << 9;
             projectileId = projectileScript.projectileInstanceId;
