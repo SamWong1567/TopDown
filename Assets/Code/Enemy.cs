@@ -22,7 +22,7 @@ public class Enemy : Entity {
     private Vector3 projectileDirectionOnImpact;
     private float projectileKnockBackStrength;
     public GameObject healGlobe;
-
+    public ParticleSystem deathParticle;
 
     public State currentState;
 
@@ -52,6 +52,7 @@ public class Enemy : Entity {
         moveSpeed = moveSpeed * (Mathf.Lerp(0.6f, 1.0f, rng / 100f));
 
 	}
+
     void FixedUpdate() {   
              
        MoveToPlayer();
@@ -93,7 +94,7 @@ public class Enemy : Entity {
             currentState = State.KnockedBack;
 
             float knockBackStartTime = Time.time;
-            float knockBackDuration = 0.07f;
+            float knockBackDuration = 0.1f;
 
             while (knockBackStartTime + knockBackDuration > Time.time) {
                 enemyRigidbody.MovePosition(transform.position + projectileDirectionOnImpact * projectileKnockBackStrength * Time.deltaTime);
@@ -108,11 +109,10 @@ public class Enemy : Entity {
         if (EnemyDeath != null) {
             EnemyDeath();
         }
-
+        Destroy(Instantiate(deathParticle.gameObject, transform.position + projectileDirectionOnImpact * transform.localScale.x / 2, Quaternion.FromToRotation(Vector3.forward, projectileDirectionOnImpact)), deathParticle.duration);
         //LOOT
 
         int rng = UnityEngine.Random.Range(1, 100);
-
 
         if (10 > rng) {
             Instantiate(healGlobe, transform.position, Quaternion.identity);

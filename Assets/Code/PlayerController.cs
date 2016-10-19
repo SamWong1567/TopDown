@@ -31,21 +31,15 @@ public class PlayerController : MonoBehaviour {
         rigidbodyPlayer = GetComponent<Rigidbody2D>();
         canvas.SetActive(true);
     }
-	
-	void Update () {
-        
-	    //Get input from the joysticks
-        input = new Vector2 (joystick.Horizontal(),joystick.Vertical());
-        lookInput = new Vector3(joystickLook.Horizontal(),0,joystickLook.Vertical());
-
-        RotatePlayer();
-        MovePlayer();
-
-       
-	}
 
     void FixedUpdate() {
 
+        //Get input from the joysticks
+        input = new Vector2(joystick.Horizontal(), joystick.Vertical());
+        lookInput = new Vector3(joystickLook.Horizontal(), 0, joystickLook.Vertical());
+
+        RotatePlayer();
+        MovePlayer();
         //Move Player
         rigidbodyPlayer.MovePosition(rigidbodyPlayer.position + velocity * Time.fixedDeltaTime);
     }

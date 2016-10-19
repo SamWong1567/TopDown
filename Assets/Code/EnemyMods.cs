@@ -80,6 +80,7 @@ public class EnemyMods : Enemy {
         if (projectileId != projectileScript.projectileInstanceId) {
             //Reflect
             projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
+            onTriggerEnterObject.GetComponent<Renderer>().material.color = Color.blue;
             //change projectile layermask to only hit player
             projectileScript.layerMaskToBeCollided.value -= 1 << 11;
             projectileScript.layerMaskToBeCollided.value += 1 << 9;
@@ -93,12 +94,13 @@ public class EnemyMods : Enemy {
     }
 
     IEnumerator Charger() {
-        
+
         float chargeDuration = 0.3f;
         float secondsBetweenCharges = 1;
         float startTime;
         yield return new WaitForSeconds(0.5f);
-        while (true) {
+        while (player) {
+
             currentState = State.Attacking;
             playerDirection = (player.transform.position - transform.position).normalized;
             startTime = Time.time;
@@ -108,13 +110,16 @@ public class EnemyMods : Enemy {
             }
             currentState = State.Idle;
             yield return new WaitForSeconds(secondsBetweenCharges);
-            
         }
     }
     public override void Die() {
         base.Die();
         int rng = UnityEngine.Random.Range(1, 100);
         int puRng = UnityEngine.Random.Range(0, LootTable.Length);
+
+        if (reflect) {
+            Reflect();
+        }
 
         if (50 > rng) {
             Instantiate(LootTable[puRng], transform.position, Quaternion.identity);

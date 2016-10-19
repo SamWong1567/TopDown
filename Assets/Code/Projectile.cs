@@ -4,13 +4,15 @@ using System.Collections;
 public class Projectile : MonoBehaviour {
 
     //public Variables
-    public float lifeTime = 4;
+    public float lifeTime;
     public float damage;
     public float projectileSpeed;
     public float size;
+    public bool canHome;
 
     public Vector2 projectileDirection;
     public LayerMask layerMaskToBeCollided;
+    public LayerMask overlapCircleCollider;
     public float knockBackStrength;
 
     public float percentChanceToPierce { get; set; }
@@ -20,14 +22,15 @@ public class Projectile : MonoBehaviour {
 
     //Components
     //private Rigidbody2D rigidProj;
-
     //System
     public float recentlyHitId { get; set; }
     public float projectileInstanceId { get; set; }
     private float moveDistance;
     private bool canPierce;
+    public GameObject closestEnemy { get; set; }
     Enemy enemyScript;
     Rigidbody2D cRigid;
+    private Collider2D hitColliders;
 
     void Start() {
         //Get Components
@@ -43,11 +46,17 @@ public class Projectile : MonoBehaviour {
         Destroy(gameObject, lifeTime);
 
         CheckPierce();
+       //hitColliders = Physics2D.OverlapCircle(new Vector2(transform.position.x, transform.position.y), 20, overlapCircleCollider);
     }
 
     void Update() {
 
         MoveProjectile();
+
+        if (canHome) {
+
+            RotateToFaceEnemy();
+        }                  
     }
 
 
@@ -55,6 +64,25 @@ public class Projectile : MonoBehaviour {
 
         moveDistance = projectileSpeed * Time.deltaTime;
         transform.Translate(projectileDirection * moveDistance);
+    }
+
+    //Homing
+    void RotateToFaceEnemy() {
+        if (closestEnemy != null) {
+            float rotationSpeed = 4;
+            Vector3 targetDirection = closestEnemy.transform.position - transform.position;
+            //From to rotation, creates a rotation from the first vector to second vector
+            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
+            //print(targetRotation.eulerAngles);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+     //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+     //Gizmos.DrawWireSphere(transform.position, 20);
+
     }
 
     void CheckPierce() {

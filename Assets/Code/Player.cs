@@ -12,5 +12,4 @@ public class Player : Entity {
         UpdateHealth();
 
     }
-
 }

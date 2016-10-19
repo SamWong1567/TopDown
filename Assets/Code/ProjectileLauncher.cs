@@ -10,7 +10,6 @@ public class ProjectileLauncher : MonoBehaviour {
     [Range (0,1)]
     public float chanceToPierce;
     public int numberOfProj;
-    public LayerMask mask;
 
     //Components
     public Transform origin;
@@ -27,7 +26,7 @@ public class ProjectileLauncher : MonoBehaviour {
     RaycastHit hit;
     // Use this for initialization
     void Start () {
-        secondsBetweenShots = 60/rpm;
+        secondsBetweenShots = 60 / rpm;
     }
 
     public void Shoot() {
@@ -42,6 +41,7 @@ public class ProjectileLauncher : MonoBehaviour {
             ////Debug.Log(hit.distance);
             ////Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1);
 
+            //FOR HOMINING ONLY, DISABLE IF NOT NEEDED
             //Determine when in game time can the projectile next fire
             nextPossibleShootTime = Time.time + secondsBetweenShots;
 
@@ -51,6 +51,9 @@ public class ProjectileLauncher : MonoBehaviour {
             for (int i = 0; i < numberOfProj; i++) {
                 newProj = Instantiate(proj, transform.position, projectileAngle[i]) as GameObject;
                 newProj.gameObject.GetComponent<Projectile>().percentChanceToPierce = chanceToPierce;
+                if (FindClosestEnemy() != null) {
+                    newProj.gameObject.GetComponent<Projectile>().closestEnemy = FindClosestEnemy();
+                }
             }
         }
     }
@@ -86,5 +89,25 @@ public class ProjectileLauncher : MonoBehaviour {
 
         rpm += changeInRPM;
         secondsBetweenShots = 60 / rpm;
-    }    
+    }
+
+    public GameObject FindClosestEnemy() {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 myPosition = transform.position;
+        foreach (GameObject go in gos) {
+
+            Vector3 diff = go.transform.position - myPosition;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance) {
+
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+        
+    }
 }
