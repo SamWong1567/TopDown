@@ -80,7 +80,7 @@ public class EnemyMods : Enemy {
         if (projectileId != projectileScript.projectileInstanceId && onTriggerEnterObject!=null) {
             //Reflect
             projectileScript.projectileDirection = projectileScript.projectileDirection * -1;
-            onTriggerEnterObject.GetComponent<Renderer>().material.color = Color.blue;
+            onTriggerEnterObject.GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
             //change projectile layermask to only hit player
             projectileScript.CancelDestroy();
             projectileScript.layerMaskToBeCollided.value -= 1 << 11;
@@ -96,7 +96,7 @@ public class EnemyMods : Enemy {
 
     IEnumerator Charger() {
 
-        float chargeDuration = 0.3f;
+        float chargeDuration = 1f;
         float secondsBetweenCharges = 1;
         float startTime;
         yield return new WaitForSeconds(0.5f);

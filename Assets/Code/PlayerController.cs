@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
         input = new Vector2(joystick.Horizontal(), joystick.Vertical());
         lookInput = new Vector3(joystickLook.Horizontal(), 0, joystickLook.Vertical());
 
+
         RotatePlayer();
         MovePlayer();
         //Move Player
@@ -80,7 +81,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     void MovePlayer() {
-
         //Get move direction and velocity
         if (input.magnitude != 0) {
             velocity = input;
@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour {
 
         //Direction of Movement
         velocity = ((velocity.magnitude > 1) ? velocity.normalized : velocity) * walkSpeed;
+        
 
         //Below NEEDS to be changed as this does not take into account the game physics and causes the player to pass through objects
         //transform.Translate(motion * walkSpeed * Time.deltaTime,Space.World);

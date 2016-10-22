@@ -35,10 +35,10 @@ public class Spawner : MonoBehaviour {
         numberToSpawn[1] = currentWave.numberOfReflect;
         numberToSpawn[2] = currentWave.numberOfCharger;
 
-        StartCoroutine("InstantiateEnemy");
+        StartCoroutine("QueueSpawning");
         print("Current Wave: " + currentWaveNumber);
     }
-    IEnumerator InstantiateEnemy() {
+    IEnumerator QueueSpawning() {
 
         CountEnemiesToBeSpawned();
         PopulateCurrentWaveSpawnList();
@@ -46,23 +46,27 @@ public class Spawner : MonoBehaviour {
         //Instantiate enemies by the currentWaveSpawnList order
         for (int i = 0; i < enemiesToSpawn; i++) {
 
-            int k = currentWaveSpawnList[i];
-            Vector3 spawnLocation = new Vector3(Random.Range(-14, 14), Random.Range(-14, 14), 0);            
-            GameObject newSpawnWarning = Instantiate(spawnWarning, spawnLocation, Quaternion.identity) as GameObject;
-            float spawnWarningDuration = newSpawnWarning.transform.GetComponent<FadeInSprite>().duration;
-
-            Destroy(newSpawnWarning, spawnWarningDuration);
-            yield return new WaitForSeconds(spawnWarningDuration);
-
-            GameObject newEnemy = Instantiate(enemyType[k], spawnLocation, Quaternion.identity) as GameObject;
-            
-            //Subscribe the OnEnemyDeath method to the EnemyDeath event in every instance of enemy
-            newEnemy.GetComponent<Enemy>().EnemyDeath += OnEnemyDeath;
+            StartCoroutine("InstantiateEnemy", i);
             yield return new WaitForSeconds(currentWave.secondsBetweenSpawn);
         }
         print("All enemies in wave spawned");       
     }
 
+    IEnumerator InstantiateEnemy(int i) {
+
+        int k = currentWaveSpawnList[i];
+        Vector3 spawnLocation = new Vector3(Random.Range(-14, 14), Random.Range(-14, 14), 0);
+        GameObject newSpawnWarning = Instantiate(spawnWarning, spawnLocation, Quaternion.identity) as GameObject;
+        float spawnWarningDuration = newSpawnWarning.transform.GetComponent<FadeInSprite>().duration;
+
+        Destroy(newSpawnWarning, spawnWarningDuration);
+        yield return new WaitForSeconds(spawnWarningDuration);
+        GameObject newEnemy = Instantiate(enemyType[k], spawnLocation, Quaternion.identity) as GameObject;
+
+        //Subscribe the OnEnemyDeath method to the EnemyDeath event in every instance of enemy
+        newEnemy.GetComponent<Enemy>().EnemyDeath += OnEnemyDeath;
+
+    }
     IEnumerator CallNextWave() {
 
         yield return new WaitForSeconds(secondsBetweenWaves);

@@ -8,7 +8,8 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     private Image bgImg;
     private Image joystickImg;
     private Image joystickKnob;
-    private Vector2 move;   
+    private Vector2 move;
+    public bool canSnapTo45;
     
     private Vector2 joystickOrigin;
 
@@ -50,6 +51,11 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             
             Vector2 joystickMove = move * (joystickImg.rectTransform.sizeDelta.x / 2);
             joystickKnob.rectTransform.anchoredPosition = joystickMove;
+
+            //Use SnapToAngle method to snap the input vector to 45 degrees partitions
+            if (canSnapTo45) {
+                move = SnapToAngle(move, 45);
+            } 
         }                                
     }
 
@@ -85,6 +91,26 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
 
     public float Vertical() {        
             return move.y;       
+    }
+
+    Vector2 SnapToAngle(Vector2 v2, float snapAngle) {
+        float angle = Vector2.Angle(Vector2.up, v2);
+
+        if (angle < snapAngle / 2f) {
+            return Vector2.up;
+        }
+
+        if (angle > 180f - snapAngle / 2) {
+            return Vector2.down;
+        }
+
+        float x = Mathf.Round(angle / snapAngle);
+        float dAngle = (x * snapAngle) - angle;
+
+        Vector3 axis = Vector3.Cross(Vector3.up, v2);
+        Quaternion q = Quaternion.AngleAxis(dAngle, axis);
+
+        return q * v2;
     }
     
 }
